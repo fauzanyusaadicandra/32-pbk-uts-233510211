@@ -4,12 +4,13 @@
 
     <!-- Form untuk menambah kegiatan -->
     <input v-model="newActivity" type="text" placeholder="Masukkan kegiatan baru" />
-    <button @click="addActivity">Tambah Kegiatan</button> <!-- Menambahkan tombol untuk menambah kegiatan -->
+    <button @click="addActivity">Tambah Kegiatan</button>
 
     <!-- Menampilkan daftar kegiatan yang sudah ditambahkan -->
     <ul>
       <li v-for="(activity, index) in activities" :key="index">
         {{ activity }}
+        <button @click="removeActivity(index)">Hapus</button> <!-- Tombol hapus kegiatan -->
       </li>
     </ul>
   </div>
@@ -29,6 +30,9 @@ export default {
         this.activities.push(this.newActivity.trim()); // Menambahkan kegiatan ke array
         this.newActivity = ''; // Reset input setelah ditambah
       }
+    },
+    removeActivity(index) {
+      this.activities.splice(index, 1); // Menghapus kegiatan berdasarkan index
     }
   }
 };
@@ -67,5 +71,13 @@ ul {
 li {
   margin: 5px 0;
   font-size: 18px;
+}
+
+button:nth-child(2) {
+  background-color: #f44336; /* Merah untuk tombol hapus */
+}
+
+button:nth-child(2):hover {
+  background-color: #e53935; /* Warna merah lebih gelap saat hover */
 }
 </style>

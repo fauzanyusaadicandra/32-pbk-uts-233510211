@@ -4,6 +4,7 @@
 
     <!-- Form untuk menambah kegiatan -->
     <input v-model="newActivity" type="text" placeholder="Masukkan kegiatan baru" />
+    <button @click="addActivity">Tambah Kegiatan</button> <!-- Menambahkan tombol untuk menambah kegiatan -->
 
     <!-- Menampilkan daftar kegiatan yang sudah ditambahkan -->
     <ul>

@@ -6,12 +6,20 @@
     <input v-model="newActivity" type="text" placeholder="Masukkan kegiatan baru" />
     <button @click="addActivity">Tambah Kegiatan</button>
 
-    <!-- Menampilkan daftar kegiatan yang sudah ditambahkan -->
+    <!-- Filter: tampilkan hanya kegiatan belum selesai -->
+    <div style="margin-top: 20px;">
+      <label>
+        <input type="checkbox" v-model="showOnlyIncomplete" />
+        Tampilkan hanya kegiatan yang belum selesai
+      </label>
+    </div>
+
+    <!-- Daftar kegiatan -->
     <ul>
-      <li v-for="(activity, index) in activities" :key="index">
-        <input type="checkbox" v-model="activity.completed" /> <!-- Checkbox untuk menandai kegiatan selesai -->
-        <span :class="{ completed: activity.completed }">{{ activity.name }}</span> <!-- Menandai dengan CSS jika selesai -->
-        <button @click="removeActivity(index)">Hapus</button> <!-- Tombol hapus kegiatan -->
+      <li v-for="(activity, index) in filteredActivities" :key="index">
+        <input type="checkbox" v-model="activity.completed" />
+        <span :class="{ completed: activity.completed }">{{ activity.name }}</span>
+        <button @click="removeActivity(index)">Hapus</button>
       </li>
     </ul>
   </div>
@@ -21,33 +29,40 @@
 export default {
   data() {
     return {
-      newActivity: '', // Untuk menampung input kegiatan baru
-      activities: []    // Array untuk menyimpan daftar kegiatan
+      newActivity: '',
+      activities: [],
+      showOnlyIncomplete: false
     };
+  },
+  computed: {
+    filteredActivities() {
+      return this.showOnlyIncomplete
+        ? this.activities.filter(activity => !activity.completed)
+        : this.activities;
+    }
   },
   methods: {
     addActivity() {
       if (this.newActivity.trim() !== '') {
-        this.activities.push({ name: this.newActivity.trim(), completed: false }); // Menambahkan kegiatan baru dengan status completed false
-        this.newActivity = ''; // Reset input setelah ditambah
+        this.activities.push({ name: this.newActivity.trim(), completed: false });
+        this.newActivity = '';
       }
     },
     removeActivity(index) {
-      this.activities.splice(index, 1); // Menghapus kegiatan berdasarkan index
+      this.activities.splice(index, 1);
     }
   }
 };
 </script>
 
 <style>
-/* Styling dasar */
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   text-align: center;
   margin-top: 60px;
 }
 
-input {
+input[type="text"] {
   padding: 8px;
   margin-right: 10px;
 }
@@ -58,6 +73,7 @@ button {
   color: white;
   border: none;
   cursor: pointer;
+  margin-left: 10px;
 }
 
 button:hover {
@@ -70,24 +86,24 @@ ul {
 }
 
 li {
-  margin: 5px 0;
+  margin: 10px 0;
   font-size: 18px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
-button:nth-child(2) {
-  background-color: #f44336; /* Merah untuk tombol hapus */
-}
-
-button:nth-child(2):hover {
-  background-color: #e53935; /* Warna merah lebih gelap saat hover */
-}
-
-/* Styling untuk kegiatan yang sudah selesai */
 .completed {
-  text-decoration: line-through; /* Garis tengah untuk menunjukkan kegiatan selesai */
+  text-decoration: line-through;
   color: #888;
+}
+
+button:nth-child(3) {
+  background-color: #f44336;
+}
+
+button:nth-child(3):hover {
+  background-color: #e53935;
 }
 </style>

@@ -72,6 +72,9 @@ ul {
 li {
   margin: 5px 0;
   font-size: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 button:nth-child(2) {

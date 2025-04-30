@@ -9,7 +9,8 @@
     <!-- Menampilkan daftar kegiatan yang sudah ditambahkan -->
     <ul>
       <li v-for="(activity, index) in activities" :key="index">
-        {{ activity }}
+        <input type="checkbox" v-model="activity.completed" /> <!-- Checkbox untuk menandai kegiatan selesai -->
+        <span :class="{ completed: activity.completed }">{{ activity.name }}</span> <!-- Menandai dengan CSS jika selesai -->
         <button @click="removeActivity(index)">Hapus</button> <!-- Tombol hapus kegiatan -->
       </li>
     </ul>
@@ -27,7 +28,7 @@ export default {
   methods: {
     addActivity() {
       if (this.newActivity.trim() !== '') {
-        this.activities.push(this.newActivity.trim()); // Menambahkan kegiatan ke array
+        this.activities.push({ name: this.newActivity.trim(), completed: false }); // Menambahkan kegiatan baru dengan status completed false
         this.newActivity = ''; // Reset input setelah ditambah
       }
     },
@@ -79,5 +80,11 @@ button:nth-child(2) {
 
 button:nth-child(2):hover {
   background-color: #e53935; /* Warna merah lebih gelap saat hover */
+}
+
+/* Styling untuk kegiatan yang sudah selesai */
+.completed {
+  text-decoration: line-through; /* Garis tengah untuk menunjukkan kegiatan selesai */
+  color: #888;
 }
 </style>
